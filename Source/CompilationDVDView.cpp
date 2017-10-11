@@ -8,7 +8,6 @@
 #include "Constants.h"
 #include "DirRefFilter.h"
 #include "FolderSizeCount.h"
-#include "OutputParser.h"
 
 #include <Alert.h>
 #include <Catalog.h>
@@ -36,9 +35,11 @@ CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 	fImagePath(new BPath()),
 	fNotification(B_PROGRESS_NOTIFICATION),
 	fProgress(0),
-	fETAtime("--")
+	fETAtime("--"),
+	fParser(fProgress, fETAtime)
 {
 	windowParent = &parent;
+
 	step = NONE;
 
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
@@ -272,7 +273,7 @@ CompilationDVDView::_BurnerOutput(BMessage* message)
 
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fBurnerInfoTextView->Text();
-		int32 modified = OutputParser(fProgress, fETAtime, text, data);
+		int32 modified = fParser.ParseLine(text, data);
 		if (modified == NOCHANGE) {
 			data << "\n";
 			fBurnerInfoTextView->Insert(data.String());
@@ -313,6 +314,7 @@ CompilationDVDView::_BurnerOutput(BMessage* message)
 		fBurnButton->SetEnabled(true);
 
 		step = NONE;
+		fParser.Reset();
 	}
 }
 

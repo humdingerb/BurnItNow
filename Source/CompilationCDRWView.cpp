@@ -5,7 +5,6 @@
 #include "CommandThread.h"
 #include "CompilationCDRWView.h"
 #include "Constants.h"
-#include "OutputParser.h"
 
 #include <Alert.h>
 #include <Button.h>
@@ -29,7 +28,8 @@ CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 	fBlankerThread(NULL),
 	fNotification(B_PROGRESS_NOTIFICATION),
 	fProgress(0),
-	fETAtime("--")
+	fETAtime("--"),
+	fParser(fProgress, fETAtime)
 {
 	windowParent = &parent;
 	step = NONE;
@@ -198,7 +198,7 @@ CompilationCDRWView::_BlankerParserOutput(BMessage* message)
 
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fBlankerInfoTextView->Text();
-		int32 modified = OutputParser(fProgress, fETAtime, text, data);
+		int32 modified = fParser.ParseLine(text, data);
 		if (modified == NOCHANGE) {
 			data << "\n";
 			fBlankerInfoTextView->Insert(data.String());

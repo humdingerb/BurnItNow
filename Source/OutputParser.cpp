@@ -12,6 +12,7 @@
 #include <Catalog.h>
 #include <DateTimeFormat.h>
 #include <DurationFormat.h>
+#include <StringList.h>
 #include <TimeFormat.h>
 
 #include <parsedate.h>
@@ -21,30 +22,44 @@
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "Parser"
 
+
+OutputParser::OutputParser(float& noteProgress, BString& noteEta):
+	progress(noteProgress),
+	eta(noteEta)
+{
+	Reset();
+}
+
+
+OutputParser::~OutputParser()
+{
+}
+
+
 int32
-OutputParser(float& progress, BString& eta, BString& text, BString newline)
+OutputParser::ParseLine(BString& text, BString newline)
 {
 	int32 resultNewline;
 	int32 resultText;
 
-	// detect percentage outputs
+	// detect progress of makeisofs
 	resultNewline = newline.FindFirst("done, estimate finish");
 	if (resultNewline != B_ERROR) {
 		// get the percentage
-		BString percent;
-		int32 charCount = newline.FindFirst("%");
-		newline.CopyInto(percent, 0, charCount - 1);
-		progress = atof(percent.String());
+		BStringList percentList;
+		newline.Split("%", true, percentList);
+		printf("mkisofs percentage: %s\n", percentList.StringAt(0).String());
+		progress = atof(percentList.StringAt(0));
 
 		// get the ETA
 		BString when;
-		charCount = newline.FindFirst("finish");
+		int32 charCount = newline.FindFirst("finish");
 		newline.CopyInto(when, charCount + 6, newline.CountChars());
 
 		const char* dateformat("A B d H:M:S Y");
 		set_dateformats(&dateformat);
-		time_t finishTime = parsedate(when, -1);
-		time_t now = (time_t)real_time_clock();
+		bigtime_t finishTime = parsedate(when, -1);
+		bigtime_t now = (bigtime_t)real_time_clock();
 
 		BString duration;
 		BDurationFormat formatter;
@@ -64,13 +79,64 @@ OutputParser(float& progress, BString& eta, BString& text, BString newline)
 		return PERCENT;
 	}
 
-	// replace the newline string
-	resultNewline = newline.FindFirst(
-		"Last chance to quit, starting real write in");
+	// detect progress of cdrecord -v
+	resultNewline = newline.FindFirst(" MB written (fifo");
 	if (resultNewline != B_ERROR) {
-		text << "\n" << "Waiting...";
-		return CHANGE;
+		// calculate percentage
+		BStringList percentList;
+		newline.Split(" ", true, percentList);
+//	printf("0: %s\n1: %s\n2: %s\n3: %s\n4: %s\n5: %s\n6: %s\n7: %s\n8: %s\n9: %s\n10: %s\n11: %s\n",
+//	percentList.StringAt(0).String(), percentList.StringAt(1).String(), percentList.StringAt(2).String(), percentList.StringAt(3).String(),
+//	percentList.StringAt(4).String(), percentList.StringAt(5).String(), percentList.StringAt(6).String(), percentList.StringAt(7).String(),
+//	percentList.StringAt(8).String(), percentList.StringAt(9).String(), percentList.StringAt(10).String(), percentList.StringAt(11).String());
+
+		float current = atof(percentList.StringAt(2));
+		float target = atof(percentList.StringAt(4));
+		progress = current / target;
+	printf("cdrecord, current: %f, target: %f, percentage: %f\n",
+		current, target, progress);
+
+		// calculate ETA
+		bigtime_t now = (bigtime_t)real_time_clock();
+		float speed = ((current - fLastSize)  / (now - fLastTime)); // MB/s
+		float secondsLeft = (target - current) * speed;
+		fLastTime = now;
+		fLastSize = current;
+	printf("cdrecord, speed: %f, seconds left: %f\n", speed, secondsLeft);
+
+		BString duration;
+		BDurationFormat formatter;
+		// add 1 sec, otherwise the last second of the progress isn't shown...
+		formatter.Format(duration, (now - 1) * 1000000LL, (now + secondsLeft) * 1000000LL);
+		eta = B_TRANSLATE("Finished in %duration%");
+		eta.ReplaceFirst("%duration%", duration);
+
+		// print on top of the last line
+		resultText = text.FindFirst(" MB written (fifo");
+		if (resultText != B_ERROR) {
+			int32 offset = text.FindLast("\n");
+			if (offset != B_ERROR)
+				text.Remove(offset, text.CountChars() - offset);
+		}
+		text << "\n" << newline;
+		return PERCENT;
 	}
 
+	// replace the newline string
+//	resultNewline = newline.FindFirst(
+//		"Last chance to quit, starting real write in");
+//	if (resultNewline != B_ERROR) {
+//		text << "\n" << "Waiting...";
+//		return CHANGE;
+//	}
+
 	return NOCHANGE;
+}
+
+
+void
+OutputParser::Reset()
+{
+	fLastTime = 0;
+	fLastSize = 0;
 }

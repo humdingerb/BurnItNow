@@ -32,7 +32,8 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 	fBurnerThread(NULL),
 	fNotification(B_PROGRESS_NOTIFICATION),
 	fProgress(0),
-	fETAtime("--")
+	fETAtime("--"),
+	fParser(fProgress, fETAtime)
 {
 	windowParent = &parent;
 
@@ -154,7 +155,7 @@ CompilationAudioView::_BurnerParserOutput(BMessage* message)
 
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fBurnerInfoTextView->Text();
-		int32 modified = OutputParser(fProgress, fETAtime, text, data);
+		int32 modified = fParser.ParseLine(text, data);
 		if (modified == NOCHANGE) {
 			data << "\n";
 			fBurnerInfoTextView->Insert(data.String());
@@ -168,11 +169,12 @@ CompilationAudioView::_BurnerParserOutput(BMessage* message)
 	}
 	int32 code = -1;
 	if (message->FindInt32("thread_exit", &code) == B_OK) {
-			fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
-				"Burning complete. Burn another disc?",
-				"Status notification"));
-			fBurnButton->SetEnabled(true);
-			step = NONE;
+		fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
+			"Burning complete. Burn another disc?",
+			"Status notification"));
+		fBurnButton->SetEnabled(true);
+		step = NONE;
+		fParser.Reset();
 	}
 }
 

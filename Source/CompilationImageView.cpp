@@ -6,7 +6,6 @@
 #include "CommandThread.h"
 #include "CompilationImageView.h"
 #include "Constants.h"
-#include "OutputParser.h"
 
 #include <Alert.h>
 #include <ControlLook.h>
@@ -34,7 +33,8 @@ CompilationImageView::CompilationImageView(BurnWindow& parent)
 	fImageParserThread(NULL),
 	fNotification(B_PROGRESS_NOTIFICATION),
 	fProgress(0),
-	fETAtime("--")
+	fETAtime("--"),
+	fParser(fProgress, fETAtime)
 {
 	windowParent = &parent;
 	step = NONE;
@@ -278,7 +278,7 @@ CompilationImageView::_ImageParserOutput(BMessage* message)
 
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fImageInfoTextView->Text();
-		int32 modified = OutputParser(fProgress, fETAtime, text, data);
+		int32 modified = fParser.ParseLine(text, data);
 		if (modified == NOCHANGE) {
 			data << "\n";
 			fImageInfoTextView->Insert(data.String());
@@ -308,6 +308,7 @@ CompilationImageView::_ImageParserOutput(BMessage* message)
 		fBurnButton->SetEnabled(true);
 
 		step = NONE;
+		fParser.Reset();
 	}
 }
 

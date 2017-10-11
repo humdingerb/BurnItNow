@@ -34,7 +34,8 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 	fClonerThread(NULL),
 	fNotification(B_PROGRESS_NOTIFICATION),
 	fProgress(0),
-	fETAtime("--")
+	fETAtime("--"),
+	fParser(fProgress, fETAtime)
 {
 	windowParent = &parent;
 	step = NONE;
@@ -246,7 +247,7 @@ CompilationCloneView::_ClonerOutput(BMessage* message)
 
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fClonerInfoTextView->Text();
-		int32 modified = OutputParser(fProgress, fETAtime, text, data);
+		int32 modified = fParser.ParseLine(text, data);
 		if (modified == NOCHANGE) {
 			data << "\n";
 			fClonerInfoTextView->Insert(data.String());
@@ -299,6 +300,7 @@ CompilationCloneView::_ClonerOutput(BMessage* message)
 		fBurnButton->SetEnabled(true);
 
 		step = NONE;
+		fParser.Reset();
 	}
 }
 

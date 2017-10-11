@@ -438,6 +438,7 @@ CompilationDVDView::BurnDisc()
 	fBurnerThread->AddArgument(config.mode)
 		->AddArgument("fs=16m")
 		->AddArgument(device)
+		->AddArgument("-v")	// to get progress output
 		->AddArgument("-gracetime=2")
 		->AddArgument("-pad")
 		->AddArgument("padsize=63s")

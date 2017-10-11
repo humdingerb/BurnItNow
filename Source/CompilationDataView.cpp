@@ -217,6 +217,71 @@ CompilationDataView::_OpenDirectory(BMessage* message)
 	fBurnButton->SetEnabled(false);
 	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Build the image",
 		"Status notification"));
+
+//	fNotification.SetGroup("BurnItNow");
+//	fNotification.SetMessageID("BurnItNow_Data");
+//	fNotification.SetTitle(B_TRANSLATE("Building data image"));
+//	fNotification.SetContent(B_TRANSLATE("Preparing the build" B_UTF8_ELLIPSIS));
+//	fNotification.SetProgress(0);
+//	 // It may take a while for the building to start...
+//	fNotification.Send(60 * 1000000LL);
+//
+//		BString text = fBurnerInfoTextView->Text();
+//		BString test("Track 01:  0 of  295 MB written (fifo 100%) [buf 100%]   4.0x.");
+//		int32 modified = fParser.ParseLine(text, test);
+//			_UpdateProgress();
+//			fBurnerInfoTextView->SetText(text);
+//			fBurnerInfoTextView->ScrollTo(0.0, 1000000.0);
+//printf("percentage: %f, ETA: %s\n", fProgress, fETAtime.String());
+//		snooze(4 * 1000000LL);	// wait 4 secs
+//		test = "Track 01:  50 of  295 MB written (fifo 100%) [buf 100%]   4.0x.";
+//		modified = fParser.ParseLine(text, test);
+//			_UpdateProgress();
+//			fBurnerInfoTextView->SetText(text);
+//			fBurnerInfoTextView->ScrollTo(0.0, 1000000.0);
+//printf("percentage: %f, ETA: %s\n", fProgress, fETAtime.String());
+//		snooze(4 * 1000000LL);	// wait 4 secs
+//		 test = "Track 01:  100 of  295 MB written (fifo 100%) [buf 100%]   4.0x.";
+//		 modified = fParser.ParseLine(text, test);
+//			_UpdateProgress();
+//			fBurnerInfoTextView->SetText(text);
+//			fBurnerInfoTextView->ScrollTo(0.0, 1000000.0);
+//printf("percentage: %f, ETA: %s\n", fProgress, fETAtime.String());
+//		snooze(4 * 1000000LL);	// wait 4 secs
+//		 test ="Track 01:  150 of  295 MB written (fifo 100%) [buf 100%]   4.0x.";
+//		 modified = fParser.ParseLine(text, test);
+//			_UpdateProgress();
+//			fBurnerInfoTextView->SetText(text);
+//			fBurnerInfoTextView->ScrollTo(0.0, 1000000.0);
+//printf("percentage: %f, ETA: %s\n", fProgress, fETAtime.String());
+//		snooze(4 * 1000000LL);	// wait 4 secs
+//		 test = "Track 01:  200 of  295 MB written (fifo 100%) [buf 100%]   4.0x.";
+//		 modified = fParser.ParseLine(text, test);
+//			_UpdateProgress();
+//			fBurnerInfoTextView->SetText(text);
+//			fBurnerInfoTextView->ScrollTo(0.0, 1000000.0);
+//printf("percentage: %f, ETA: %s\n", fProgress, fETAtime.String());
+//		snooze(4 * 1000000LL);	// wait 4 secs
+//		 test = "Track 01:  250 of  295 MB written (fifo 100%) [buf 100%]   4.0x.";
+//		 modified = fParser.ParseLine(text, test);
+//			_UpdateProgress();
+//			fBurnerInfoTextView->SetText(text);
+//			fBurnerInfoTextView->ScrollTo(0.0, 1000000.0);
+//printf("percentage: %f, ETA: %s\n", fProgress, fETAtime.String());
+//		snooze(2 * 1000000LL);	// wait 4 secs
+//		 test = "Track 01:  270 of  295 MB written (fifo 100%) [buf 100%]   4.0x.";
+//		 modified = fParser.ParseLine(text, test);
+//			_UpdateProgress();
+//			fBurnerInfoTextView->SetText(text);
+//			fBurnerInfoTextView->ScrollTo(0.0, 1000000.0);
+//printf("percentage: %f, ETA: %s\n", fProgress, fETAtime.String());
+//		snooze(2 * 1000000LL);	// wait 4 secs
+//		 test = "Track 01:  295 of  295 MB written (fifo 100%) [buf 100%]   4.0x.";
+//		 modified = fParser.ParseLine(text, test);
+//			_UpdateProgress();
+//			fBurnerInfoTextView->SetText(text);
+//			fBurnerInfoTextView->ScrollTo(0.0, 1000000.0);
+//printf("percentage: %f, ETA: %s\n", fProgress, fETAtime.String());
 }
 
 
@@ -227,38 +292,7 @@ CompilationDataView::_BurnerOutput(BMessage* message)
 
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fBurnerInfoTextView->Text();
-//		BString test("Track 01:  10 of  295 MB written (fifo 100%) [buf 100%]   4.0x.");
 		int32 modified = fParser.ParseLine(text, data);
-//printf("percentage: %f, ETA: %s\n", fProgress, fETAtime.String());
-//		snooze(1000000LL);	// wait 1 sec
-//		 test = "Track 01:  20 of  295 MB written (fifo 100%) [buf 100%]   4.0x.";
-//		 modified = fParser.ParseLine(text, test);
-//printf("percentage: %f, ETA: %s\n", fProgress, fETAtime.String());
-//		snooze(1000000LL);	// wait 1 sec
-//		 test = "Track 01:  30 of  295 MB written (fifo 100%) [buf 100%]   4.0x.";
-//		 modified = fParser.ParseLine(text, test);
-//printf("percentage: %f, ETA: %s\n", fProgress, fETAtime.String());
-//		snooze(1000000LL);	// wait 1 sec
-//		 test ="Track 01:  40 of  295 MB written (fifo 100%) [buf 100%]   4.0x.";
-//		 modified = fParser.ParseLine(text, test);
-//printf("percentage: %f, ETA: %s\n", fProgress, fETAtime.String());
-//		snooze(1000000LL);	// wait 1 sec
-//		 test = "Track 01:  50 of  295 MB written (fifo 100%) [buf 100%]   4.0x.";
-//		 modified = fParser.ParseLine(text, test);
-//printf("percentage: %f, ETA: %s\n", fProgress, fETAtime.String());
-//		snooze(1000000LL);	// wait 1 sec
-//		 test = "Track 01:  60 of  295 MB written (fifo 100%) [buf 100%]   4.0x.";
-//		 modified = fParser.ParseLine(text, test);
-//printf("percentage: %f, ETA: %s\n", fProgress, fETAtime.String());
-//		snooze(1000000LL);	// wait 1 sec
-//		 test = "Track 01:  70 of  295 MB written (fifo 100%) [buf 100%]   4.0x.";
-//		 modified = fParser.ParseLine(text, test);
-//printf("percentage: %f, ETA: %s\n", fProgress, fETAtime.String());
-//		snooze(1000000LL);	// wait 1 sec
-//		 test = "Track 01:  80 of  295 MB written (fifo 100%) [buf 100%]   4.0x.";
-//		 modified = fParser.ParseLine(text, test);
-//printf("percentage: %f, ETA: %s\n", fProgress, fETAtime.String());
-//		snooze(1000000LL);	// wait 1 sec
 		if (modified == NOCHANGE) {
 			data << "\n";
 			fBurnerInfoTextView->Insert(data.String());
@@ -307,9 +341,12 @@ CompilationDataView::_BurnerOutput(BMessage* message)
 void
 CompilationDataView::_UpdateProgress()
 {
-	fNotification.SetContent(fETAtime);
+	if (fProgress == 0 || fProgress == 1.0)
+		fNotification.SetContent(" ");
+	else
+		fNotification.SetContent(fETAtime);
 	fNotification.SetMessageID("BurnItNow_Data");
-	fNotification.SetProgress(fProgress / 100);
+	fNotification.SetProgress(fProgress);
 	fNotification.Send();
 }
 
@@ -432,6 +469,7 @@ CompilationDataView::BurnDisc()
 	fBurnerThread->AddArgument(config.mode)
 		->AddArgument("fs=16m")
 		->AddArgument(device)
+		->AddArgument("-v")	// to get progress output
 		->AddArgument("-gracetime=2")
 		->AddArgument("-pad")
 		->AddArgument("padsize=63s")

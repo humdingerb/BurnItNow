@@ -41,7 +41,7 @@ OutputParser::ParseLine(BString& text, BString newline)
 {
 	int32 resultNewline;
 	int32 resultText;
-
+printf("New line: %s\n", newline.String());
 	// detect progress of makeisofs
 	resultNewline = newline.FindFirst("done, estimate finish");
 	if (resultNewline != B_ERROR) {
@@ -49,7 +49,7 @@ OutputParser::ParseLine(BString& text, BString newline)
 		BStringList percentList;
 		newline.Split("%", true, percentList);
 		printf("mkisofs percentage: %s\n", percentList.StringAt(0).String());
-		progress = atof(percentList.StringAt(0));
+		progress = atof(percentList.StringAt(0)) / 100;
 
 		// get the ETA
 		BString when;
@@ -68,7 +68,7 @@ OutputParser::ParseLine(BString& text, BString newline)
 		eta = B_TRANSLATE("Finished in %duration%");
 		eta.ReplaceFirst("%duration%", duration);
 
-		// print on top of the last line
+		// print on top of the last line (not if this is the first progress line)
 		resultText = text.FindFirst("done, estimate finish");
 		if (resultText != B_ERROR) {
 			int32 offset = text.FindLast("\n");
@@ -85,11 +85,6 @@ OutputParser::ParseLine(BString& text, BString newline)
 		// calculate percentage
 		BStringList percentList;
 		newline.Split(" ", true, percentList);
-//	printf("0: %s\n1: %s\n2: %s\n3: %s\n4: %s\n5: %s\n6: %s\n7: %s\n8: %s\n9: %s\n10: %s\n11: %s\n",
-//	percentList.StringAt(0).String(), percentList.StringAt(1).String(), percentList.StringAt(2).String(), percentList.StringAt(3).String(),
-//	percentList.StringAt(4).String(), percentList.StringAt(5).String(), percentList.StringAt(6).String(), percentList.StringAt(7).String(),
-//	percentList.StringAt(8).String(), percentList.StringAt(9).String(), percentList.StringAt(10).String(), percentList.StringAt(11).String());
-
 		float current = atof(percentList.StringAt(2));
 		float target = atof(percentList.StringAt(4));
 		progress = current / target;
@@ -106,12 +101,11 @@ OutputParser::ParseLine(BString& text, BString newline)
 
 		BString duration;
 		BDurationFormat formatter;
-		// add 1 sec, otherwise the last second of the progress isn't shown...
-		formatter.Format(duration, (now - 1) * 1000000LL, (now + secondsLeft) * 1000000LL);
+		formatter.Format(duration, now * 1000000LL, (now + secondsLeft) * 1000000LL);
 		eta = B_TRANSLATE("Finished in %duration%");
 		eta.ReplaceFirst("%duration%", duration);
 
-		// print on top of the last line
+		// print on top of the last line (not if this is the first progress line)
 		resultText = text.FindFirst(" MB written (fifo");
 		if (resultText != B_ERROR) {
 			int32 offset = text.FindLast("\n");

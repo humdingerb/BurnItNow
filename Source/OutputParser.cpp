@@ -94,7 +94,7 @@ printf("New line: %s\n", newline.String());
 		// calculate ETA
 		bigtime_t now = (bigtime_t)real_time_clock();
 		float speed = ((current - fLastSize)  / (now - fLastTime)); // MB/s
-		float secondsLeft = (target - current) * speed;
+		float secondsLeft = (target - current) / speed;
 		fLastTime = now;
 		fLastSize = current;
 	printf("cdrecord, speed: %f, seconds left: %f\n", speed, secondsLeft);

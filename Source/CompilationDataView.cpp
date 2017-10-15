@@ -227,56 +227,42 @@ CompilationDataView::_OpenDirectory(BMessage* message)
 //	fNotification.Send(60 * 1000000LL);
 //
 //		BString text = fBurnerInfoTextView->Text();
-//		BString test("Track 01:  0 of  295 MB written (fifo 100%) [buf 100%]   4.0x.");
+//		BString test("Track 01:  0 of  500 MB written (fifo 100%) [buf 100%]   4.0x.");
 //		int32 modified = fParser.ParseLine(text, test);
 //			_UpdateProgress();
 //			fBurnerInfoTextView->SetText(text);
 //			fBurnerInfoTextView->ScrollTo(0.0, 1000000.0);
 //printf("percentage: %f, ETA: %s\n", fProgress, fETAtime.String());
-//		snooze(4 * 1000000LL);	// wait 4 secs
-//		test = "Track 01:  50 of  295 MB written (fifo 100%) [buf 100%]   4.0x.";
+//		snooze(2 * 1000000LL);	// wait 4 secs
+//		test = "Track 01:  100 of  500 MB written (fifo 100%) [buf 100%]   4.0x.";
 //		modified = fParser.ParseLine(text, test);
 //			_UpdateProgress();
 //			fBurnerInfoTextView->SetText(text);
 //			fBurnerInfoTextView->ScrollTo(0.0, 1000000.0);
 //printf("percentage: %f, ETA: %s\n", fProgress, fETAtime.String());
-//		snooze(4 * 1000000LL);	// wait 4 secs
-//		 test = "Track 01:  100 of  295 MB written (fifo 100%) [buf 100%]   4.0x.";
-//		 modified = fParser.ParseLine(text, test);
-//			_UpdateProgress();
-//			fBurnerInfoTextView->SetText(text);
-//			fBurnerInfoTextView->ScrollTo(0.0, 1000000.0);
-//printf("percentage: %f, ETA: %s\n", fProgress, fETAtime.String());
-//		snooze(4 * 1000000LL);	// wait 4 secs
-//		 test ="Track 01:  150 of  295 MB written (fifo 100%) [buf 100%]   4.0x.";
-//		 modified = fParser.ParseLine(text, test);
-//			_UpdateProgress();
-//			fBurnerInfoTextView->SetText(text);
-//			fBurnerInfoTextView->ScrollTo(0.0, 1000000.0);
-//printf("percentage: %f, ETA: %s\n", fProgress, fETAtime.String());
-//		snooze(4 * 1000000LL);	// wait 4 secs
-//		 test = "Track 01:  200 of  295 MB written (fifo 100%) [buf 100%]   4.0x.";
-//		 modified = fParser.ParseLine(text, test);
-//			_UpdateProgress();
-//			fBurnerInfoTextView->SetText(text);
-//			fBurnerInfoTextView->ScrollTo(0.0, 1000000.0);
-//printf("percentage: %f, ETA: %s\n", fProgress, fETAtime.String());
-//		snooze(4 * 1000000LL);	// wait 4 secs
-//		 test = "Track 01:  250 of  295 MB written (fifo 100%) [buf 100%]   4.0x.";
+//		snooze(2 * 1000000LL);	// wait 4 secs
+//		 test = "Track 01:  200 of  500 MB written (fifo 100%) [buf 100%]   4.0x.";
 //		 modified = fParser.ParseLine(text, test);
 //			_UpdateProgress();
 //			fBurnerInfoTextView->SetText(text);
 //			fBurnerInfoTextView->ScrollTo(0.0, 1000000.0);
 //printf("percentage: %f, ETA: %s\n", fProgress, fETAtime.String());
 //		snooze(2 * 1000000LL);	// wait 4 secs
-//		 test = "Track 01:  270 of  295 MB written (fifo 100%) [buf 100%]   4.0x.";
+//		 test ="Track 01:  300 of  500 MB written (fifo 100%) [buf 100%]   4.0x.";
 //		 modified = fParser.ParseLine(text, test);
 //			_UpdateProgress();
 //			fBurnerInfoTextView->SetText(text);
 //			fBurnerInfoTextView->ScrollTo(0.0, 1000000.0);
 //printf("percentage: %f, ETA: %s\n", fProgress, fETAtime.String());
 //		snooze(2 * 1000000LL);	// wait 4 secs
-//		 test = "Track 01:  295 of  295 MB written (fifo 100%) [buf 100%]   4.0x.";
+//		 test = "Track 01:  400 of  500 MB written (fifo 100%) [buf 100%]   4.0x.";
+//		 modified = fParser.ParseLine(text, test);
+//			_UpdateProgress();
+//			fBurnerInfoTextView->SetText(text);
+//			fBurnerInfoTextView->ScrollTo(0.0, 1000000.0);
+//printf("percentage: %f, ETA: %s\n", fProgress, fETAtime.String());
+//		snooze(2 * 1000000LL);	// wait 4 secs
+//		 test = "Track 01:  500 of  500 MB written (fifo 100%) [buf 100%]   4.0x.";
 //		 modified = fParser.ParseLine(text, test);
 //			_UpdateProgress();
 //			fBurnerInfoTextView->SetText(text);

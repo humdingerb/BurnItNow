@@ -3,7 +3,7 @@
  * Distributed under the terms of the MIT License.
  */
 #include "CommandThread.h"
-#include "CommandPipe.h"
+#include "prv/CommandPipe.h"
 
 #include <AutoLocker.h>
 

@@ -33,6 +33,7 @@ SRCS = \
 	AudioList.cpp \
 	BurnApplication.cpp \
 	BurnWindow.cpp \
+	prv/CommandPipe.cpp \
 	CommandThread.cpp \
 	CompilationAudioView.cpp \
 	CompilationCDRWView.cpp \

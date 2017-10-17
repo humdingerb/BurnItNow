@@ -92,8 +92,8 @@ printf("New line: %s\n", newline.String());
 		current, target, progress);
 
 		// calculate ETA
-		bigtime_t now = (bigtime_t)real_time_clock();
-		float speed = ((current - fLastSize)  / (now - fLastTime)); // MB/s
+		bigtime_t now = (bigtime_t)real_time_clock_usecs();
+		float speed = ((current - fLastSize) * 1000000.0 / (now - fLastTime)); // MB/s
 		float secondsLeft = (target - current) / speed;
 		fLastTime = now;
 		fLastSize = current;
@@ -101,9 +101,10 @@ printf("New line: %s\n", newline.String());
 
 		BString duration;
 		BDurationFormat formatter;
-		formatter.Format(duration, now * 1000000LL, (now + secondsLeft) * 1000000LL);
+		formatter.Format(duration, now, now + ((bigtime_t)secondsLeft * 1000000LL));
 		eta = B_TRANSLATE("Finished in %duration%");
 		eta.ReplaceFirst("%duration%", duration);
+	printf("ETA: %s\n\n", eta.String());
 
 		// print on top of the last line (not if this is the first progress line)
 		resultText = text.FindFirst(" MB written (fifo");
